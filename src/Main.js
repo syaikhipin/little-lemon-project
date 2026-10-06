@@ -4,7 +4,7 @@ import Booking from './Booking.js';
 
 const Main = () => {
   return (
-    <BrowserRouter basename="/little-lemon-project">
+    <BrowserRouter basename="/little-lemon-project/app">
       <Routes>
         <Route
         path='/' 

@@ -1,4 +1,6 @@
-# Little Lemon app 
+# Little Lemon app
+
+🍋 **Live demo (GitHub Pages): https://syaikhipin.github.io/little-lemon-project/** — the app wrapped in an animated phone frame with a guided tour.
 
 The Little Lemon app is a fictional restaurant mobile and web application widely used as a capstone project for Meta's front-end, Android, and iOS development courses on Coursera.
 

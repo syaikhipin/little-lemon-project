@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Little Lemon — a Mediterranean restaurant web app. Try the live demo in a phone frame and watch the guided tour." />
+  <title>Little Lemon — Live Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>" />
+</head>
+<body>
+  <nav class="topnav">
+    <a class="brand" href="#top">🍋 Little Lemon</a>
+    <div class="topnav-links">
+      <a href="#demo">Live demo</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/syaikhipin/little-lemon-project" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-copy reveal">
+      <span class="pill">Mediterranean restaurant · React web app</span>
+      <h1>Little Lemon,<br />in your <em>pocket</em>.</h1>
+      <p>Browse the week's specials, read what guests say, and reserve a table — all in a fast React single-page app. Try it live inside the phone, or press play and watch the guided tour drive it for you.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" id="cta-tour">▶&nbsp; Watch the tour</button>
+        <a class="btn btn-ghost" href="#demo">📱 Try it live</a>
+        <a class="btn btn-ghost" href="https://github.com/syaikhipin/little-lemon-project" target="_blank" rel="noopener">💻 View source</a>
+      </div>
+      <ul class="hero-stats">
+        <li><strong>2</strong><span>routes</span></li>
+        <li><strong>6</strong><span>components</span></li>
+        <li><strong>~90&nbsp;kB</strong><span>gzipped JS</span></li>
+      </ul>
+    </div>
+    <div class="hero-art reveal" aria-hidden="true">
+      <div class="blob"></div>
+      <div class="float-emoji e1">🥗</div>
+      <div class="float-emoji e2">🍋</div>
+      <div class="float-emoji e3">🍰</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="demo" id="demo">
+      <div class="phone-wrap reveal">
+        <div class="phone" id="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <iframe id="app-frame" title="Little Lemon app" src="app/" loading="lazy"></iframe>
+            <div class="phone-toast" id="phone-toast" hidden>
+              <div class="toast-card">
+                <div class="toast-check">✓</div>
+                <h3>Table reserved!</h3>
+                <p id="toast-detail">See you soon 🍋</p>
+              </div>
+            </div>
+            <div class="phone-loader" id="phone-loader"><span></span><span></span><span></span></div>
+          </div>
+          <div class="phone-btn btn-power"></div>
+          <div class="phone-btn btn-vol-up"></div>
+          <div class="phone-btn btn-vol-down"></div>
+        </div>
+        <p class="phone-hint">Live app — scroll &amp; tap inside the phone</p>
+      </div>
+
+      <div class="how" id="how">
+        <h2 class="reveal">How it works</h2>
+        <p class="lede reveal">Four steps, one smooth flow. Press play and the tour drives the real app inside the phone.</p>
+        <ol class="steps">
+          <li class="step reveal" data-step="0">
+            <span class="step-num">1</span>
+            <div><h3>Browse the specials</h3><p>Greek salad, bruschetta and lemon dessert — this week's picks with prices.</p></div>
+          </li>
+          <li class="step reveal" data-step="1">
+            <span class="step-num">2</span>
+            <div><h3>Check the reviews</h3><p>Star-rated testimonials from happy guests.</p></div>
+          </li>
+          <li class="step reveal" data-step="2">
+            <span class="step-num">3</span>
+            <div><h3>Reserve a table</h3><p>Jump to the booking route and fill the reservation form.</p></div>
+          </li>
+          <li class="step reveal" data-step="3">
+            <span class="step-num">4</span>
+            <div><h3>Get confirmed</h3><p>Name, date, time, guests — done. Table's yours.</p></div>
+          </li>
+        </ol>
+        <div class="tour-controls reveal">
+          <button class="btn btn-primary" id="tour-btn">▶&nbsp; Play the tour</button>
+          <div class="tour-progress" id="tour-progress" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <p class="tour-caption" id="tour-caption">Press play — I'll drive the app for you.</p>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature reveal"><span class="f-emoji">⚛️</span><h3>React SPA</h3><p>Client-side routing with react-router — instant page switches, no reloads.</p></div>
+      <div class="feature reveal"><span class="f-emoji">📱</span><h3>Mobile-first</h3><p>Responsive layout with a hamburger menu that collapses on small screens.</p></div>
+      <div class="feature reveal"><span class="f-emoji">📝</span><h3>Booking flow</h3><p>Validated reservation form: name, email, date, time, guests and occasion.</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>🍋 Little Lemon demo · built with React · <a href="https://github.com/syaikhipin/little-lemon-project" target="_blank" rel="noopener">source on GitHub</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
