@@ -39,9 +39,13 @@
     return new Promise(function (resolve) {
       frame.addEventListener("load", function onLoad() {
         frame.removeEventListener("load", onLoad);
-        setTimeout(resolve, 700);
+        setTimeout(resolve, 800);
       });
-      frame.src = path;
+      if (frame.getAttribute("src") === path) {
+        frame.contentWindow.location.reload(); // same src: force a real reload
+      } else {
+        frame.src = path;
+      }
     });
   }
   function scrollToEl(sel) {
@@ -71,6 +75,21 @@
     setTimeout(function () { caption.classList.remove("typing"); }, 1200);
   }
 
+  function goProfile() {
+    var d = doc();
+    var deskLink = d.querySelector('.menu-desktop #nav-profile');
+    if (deskLink && deskLink.getClientRects().length > 0) {
+      deskLink.click();
+      return sleep(400);
+    }
+    // mobile layout: open the hamburger menu first
+    d.querySelector('nav button').click();
+    return sleep(600).then(function () {
+      d.querySelector('#nav-profile-mobile').click();
+      return sleep(400);
+    });
+  }
+
   function markStep(i) {
     stepEls.forEach(function (el, j) {
       el.classList.toggle("active", j === i);
@@ -87,7 +106,16 @@
     for (var k = 0; k < progress.length; k++) progress[k].classList.remove("on");
   }
 
-  /* ---------- the tour ---------- */
+  /* ---------- the tour: the rubric flow, driven live ---------- */
+  async function onboard(d) {
+    await typeInto(d.getElementById("ob-firstname"), "Julio");
+    await typeInto(d.getElementById("ob-lastname"), "Akbar");
+    await typeInto(d.getElementById("ob-email"), "julio@example.com");
+    await sleep(400);
+    d.getElementById("ob-submit").click();
+    await sleep(1400); // onboarding -> home
+  }
+
   async function playTour() {
     if (touring) return;
     touring = true;
@@ -99,57 +127,54 @@
     await frameReady();
     loader.classList.add("done");
 
-    // Step 1 — specials
+    // start from a clean slate: forget any previous onboarding
+    try { frame.contentWindow.localStorage.removeItem("littlelemon_user"); } catch (e) {}
+    await go("app/");
+
+    // Step 1 — onboarding
     markStep(0);
-    setCaption("Browsing this week's specials — Greek salad, bruschetta, lemon dessert…");
-    if (!q(".specials-intro")) await go("app/");
-    await sleep(300);
-    scrollToEl(".specials-intro");
-    await sleep(2600);
+    setCaption("First launch? The app asks for your first name, last name and email — and won't let you in without them.");
+    await sleep(600);
+    await onboard(doc());
+    await sleep(800);
 
-    // Step 2 — testimonials
+    // Step 2 — search the menu
     markStep(1);
-    setCaption("Guests love it — let's check the reviews.");
-    scrollToEl(".testimonials-intro");
-    await sleep(2600);
+    setCaption("Hungry for salad? The hero search bar filters the menu live.");
+    scrollToEl("#menu-search");
+    await sleep(600);
+    await typeInto(q("#menu-search"), "salad");
+    await sleep(2400);
 
-    // Step 3 — booking page
+    // Step 3 — profile (pre-populated from onboarding)
     markStep(2);
-    setCaption("Time to reserve — heading to the booking page.");
-    await go("app/booking");
-    scrollToEl(".booking-form");
-    await sleep(1800);
+    setCaption("Your profile is pre-filled with the onboarding details.");
+    await goProfile();
+    await sleep(1400);
+    scrollToEl(".profile-form");
+    await sleep(1600);
 
-    // Step 4 — fill the form
+    // Step 4 — log out, then relaunch straight into Home
     markStep(3);
-    setCaption("Filling in the reservation…");
-    var d = doc();
-    await typeInto(d.getElementById("name"), "Julio");
-    await typeInto(d.getElementById("email"), "julio@example.com");
-    var tomorrow = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
-    var dateEl = d.getElementById("date");
-    dateEl.value = tomorrow;
-    dateEl.dispatchEvent(new Event("input", { bubbles: true }));
-    await sleep(350);
-    var timeEl = d.getElementById("time");
-    timeEl.value = "19:30";
-    timeEl.dispatchEvent(new Event("input", { bubbles: true }));
-    await sleep(350);
-    var guestsEl = d.getElementById("guests");
-    guestsEl.value = "2";
-    guestsEl.dispatchEvent(new Event("input", { bubbles: true }));
-    await sleep(350);
-    var occ = d.getElementById("occasion");
-    occ.value = "date-night";
-    occ.dispatchEvent(new Event("change", { bubbles: true }));
-    await sleep(900);
+    setCaption("Log out… and you're back at onboarding.");
+    q("#pf-logout").click();
+    await sleep(1500);
 
-    // Confirmation animation
-    toastDetail.textContent = "Julio · 2 guests · " + tomorrow + " at 19:30 🍋";
-    toast.hidden = false;
-    setCaption("Done — table for 2, tomorrow at 19:30. Enjoy! 🍋");
-    await sleep(3200);
-    toast.hidden = true;
+    setCaption("Onboarding again — quick refill, then we relaunch the app.");
+    await onboard(doc());
+
+    setCaption("Relaunching…");
+    await new Promise(function (resolve) {
+      frame.addEventListener("load", function onLoad() {
+        frame.removeEventListener("load", onLoad);
+        setTimeout(resolve, 1200);
+      });
+      frame.contentWindow.location.reload();
+    });
+    var landedHome = !!(function () { try { return q("#menu-search"); } catch (e) { return null; } })();
+    setCaption(landedHome
+      ? "Straight to Home — no onboarding needed. Persistence works! 🍋"
+      : "Relaunched. 🍋");
 
     stepEls.forEach(function (el) { el.classList.remove("active"); el.classList.add("done"); });
     tourBtn.disabled = false;
