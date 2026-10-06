@@ -17,9 +17,9 @@ body {
   margin: 0;
 }
 h1, h2, h3, h4, h5, h6, button {
-  font-family: 'Source Serif', serif;
+  font-family: 'Markazi Text', 'Source Serif', serif;
   line-height: 1.5;
-  font-weight: 300;
+  font-weight: 500;
   display: block;
   margin: 0;
   padding: 0 0 .5rem 0;
@@ -56,6 +56,10 @@ img {
   display: block;
   border-radius: 1rem;
 }
+input, select, textarea {
+  min-width: 0;
+  max-width: 100%;
+}
 button {
   background-color: var(--lemon-yellow);
   color: #333333;
@@ -68,7 +72,7 @@ button {
 
 /*nav*/
 
-nav { 
+nav {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   padding: 2rem 0;
@@ -109,17 +113,14 @@ nav button {
   padding: 1rem;
 }
 
-/*hero*/
+/*hero — single column on small screens, 12-col grid on desktop*/
 
 header {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
   background-color: var(--lemon-green);
-  padding: 2rem 0;
+  padding: 2rem 1.5rem;
 }
 header article {
-  grid-column: 2 / 12;
+  margin-bottom: 1.5rem;
 }
 header article h1 {
   color: var(--lemon-yellow);
@@ -131,7 +132,6 @@ header article p {
   color: #ffffff;
 }
 header figcaption {
-  grid-column: 2 / 12;
   margin-bottom: 1rem;
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -148,6 +148,9 @@ main {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   margin: 3rem 0;
+}
+main > * {
+  min-width: 0;
 }
 
 /*special*/
@@ -237,18 +240,14 @@ main {
   width: 2rem;
 }
 
-/*about*/
+/*about — single column on small screens, 12-col grid on desktop*/
 
 .about {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  padding: 2rem 0;
+  padding: 2rem 1.5rem;
   position: relative;
 }
 .about article {
-  grid-column: 2 / 12;
-  position: relative;
+  margin-bottom: 1.5rem;
 }
 .about article h2 {
   color: var(--lemon-green);
@@ -258,7 +257,6 @@ main {
 }
 .about span {
   display: grid;
-  grid-column: 2 / 12;
   grid-template-columns: repeat(12, 1fr);
 }
 .about span figcaption img {
@@ -279,18 +277,15 @@ main {
   z-index: 1;
 }
 
-/*booking*/
+/*booking — single column on small screens, 12-col grid on desktop*/
 .booking {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  padding: 2rem 0;
+  padding: 2rem 1.5rem;
 }
-.booking article, .booking form {
-  display: grid;
-  grid-column: 2 / 12;
+.booking article {
+  margin-bottom: 1.5rem;
 }
 .booking form {
+  display: grid;
   gap: .5rem;
 }
 .booking form input, .booking form select, .booking form textarea {
@@ -303,17 +298,12 @@ main {
   gap: 5rem;
 }
 
-/*footer*/
+/*footer — single column on small screens, grid on desktop*/
  footer{
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
   background-color: var(--lemon-green);
  }
  footer section{
-  display: grid;
-  grid-template-columns: repeat(12, [col-start] 1fr);
-  gap: 2rem;
-  padding: 2rem 0;
+  padding: 2rem 1.5rem;
 }
  .footer-section article, .footer-section figcaption {
   grid-column: 2 / 12;
@@ -325,8 +315,119 @@ main {
   width: 4rem;
 }
 
-@media (min-width: 1024px) {
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
+/*search bar (hero)*/
+.search-bar {
+  margin-top: 1.25rem;
+  max-width: 28rem;
+}
+.search-bar input {
+  width: 100%;
+  padding: 0.9rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid var(--lemon-yellow);
+  font-family: 'Karla', sans-serif;
+  font-size: 1.05rem;
+  background: #ffffff;
+  color: var(--lemon-dark);
+  outline: none;
+}
+.search-bar input:focus {
+  box-shadow: 0 0 0 3px rgba(244, 206, 20, 0.45);
+}
+
+/*menu empty state*/
+.menu-empty {
+  grid-column: 2 / 12;
+  font-family: 'Karla', sans-serif;
+  color: var(--lemon-green);
+  padding: 2rem 0;
+}
+
+/*onboarding + profile — single column on small screens, 12-col grid on desktop*/
+.onboarding, .profile {
+  padding: 2rem 1.5rem;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+.onboarding article, .profile article {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.onboarding article h2, .profile article h2 {
+  color: var(--lemon-green);
+}
+.onboarding-form, .profile-form {
+  display: grid;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(73, 94, 87, 0.18);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 12px 32px rgba(73, 94, 87, 0.10);
+}
+.onboarding-form label, .profile-form label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  color: var(--lemon-green);
+  margin-top: 0.5rem;
+}
+.onboarding-form input, .profile-form input {
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--lemon-green);
+  font-family: 'Karla', sans-serif;
+  font-size: 1rem;
+}
+.onboarding-form input:focus, .profile-form input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(244, 206, 20, 0.45);
+}
+.form-error {
+  font-family: 'Karla', sans-serif;
+  font-size: 0.85rem;
+  color: #b3261e;
+}
+.form-success {
+  font-family: 'Karla', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--lemon-green);
+}
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.btn-secondary {
+  background-color: #ffffff;
+  color: var(--lemon-green);
+  border: 2px solid var(--lemon-green);
+}
+
+@media (min-width: 1024px) {
+  .onboarding, .profile {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+    padding: 2rem 0;
+    grid-column: 4 / 10;
+  }
+  .onboarding article, .profile article,
+  .onboarding-form, .profile-form {
+    grid-column: 2 / 12;
+  }
+  .onboarding article, .profile article {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
   nav figcaption {
     grid-column: 3 / 4;
   }
@@ -334,8 +435,15 @@ main {
     grid-column: 4 / 11;
     justify-content: end;
   }
+  header {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+  }
   header article {
     grid-column: 3 / 6;
+    margin-bottom: 0;
   }
   header figcaption {
     grid-column: 7 / 11;
@@ -351,8 +459,20 @@ main {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 2rem; /* match header's grid gap */
   }
+  main > header {
+    grid-column: 1 / -1;
+  }
   .specials-intro, .about {
     grid-column: 1 / -1;
+  }
+  .about {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+  .about article {
+    margin-bottom: 0;
   }
   .specials-intro h2 {
     grid-column: 3 / 6;
@@ -395,18 +515,32 @@ main {
     grid-column: 8 / 11;
   }
   footer {
+    display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
   .footer-section {
+    display: grid;
     grid-column: 3 / 11;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
   }
   .footer-section article,
   .footer-section figcaption {
     grid-column: auto;
   }
   .booking {
-    grid-column: 4 / 10
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+    grid-column: 4 / 10;
+  }
+  .booking article, .booking form {
+    grid-column: 2 / 12;
+  }
+  .booking article {
+    margin-bottom: 0;
   }
 }
 @media (min-width: 1375px) {

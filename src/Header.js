@@ -1,15 +1,9 @@
-
 import Nav from './Nav.js';
-import Hero from './Hero.js';
 
-const Header = () => {
+const Header = ({ user }) => {
   return (
-    <>
-          <Nav/>
-          <Hero/>
-    </>
-
+    <Nav user={user} />
   );
-}
+};
 
 export default Header;

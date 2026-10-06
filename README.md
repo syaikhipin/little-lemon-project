@@ -2,6 +2,14 @@
 
 🍋 **Live demo (GitHub Pages): https://syaikhipin.github.io/little-lemon-project/** — the app wrapped in an animated phone frame with a guided tour.
 
+## Rubric coverage
+
+- **Onboarding**: first launch asks for first name, last name and email; the Continue button stays disabled until all fields are valid (persisted to `localStorage`).
+- **Persistence**: relaunching opens directly on the Home screen — no onboarding repeat.
+- **Profile**: the Profile nav item opens a screen pre-populated with the onboarding details (editable); **Log out** clears the session and returns to onboarding.
+- **Home**: hero section with the restaurant description and a live **search bar**; the menu list shows every dish with title, price, description and image — typing `salad` filters the list to matching items only.
+- **Style**: Little Lemon brand colors with the Markazi Text / Karla type pairing.
+
 The Little Lemon app is a fictional restaurant mobile and web application widely used as a capstone project for Meta's front-end, Android, and iOS development courses on Coursera.
 
 Key FeaturesInteractive Menu: Browse and filter food items by categories or search for specific dishes by name.
