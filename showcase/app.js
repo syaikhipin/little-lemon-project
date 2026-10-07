@@ -54,14 +54,22 @@
   }
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
+  function setNativeValue(input, text) {
+    // React controlled inputs ignore a plain `input.value = x`: bypass
+    // React's value tracker via the native setter from the element's own
+    // realm, then dispatch input so onChange fires.
+    var setter = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(input), "value").set;
+    setter.call(input, text);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
   function typeInto(input, text) {
     return new Promise(function (resolve) {
       input.focus();
       var i = 0;
       (function tick() {
         if (i <= text.length) {
-          input.value = text.slice(0, i);
-          input.dispatchEvent(new Event("input", { bubbles: true }));
+          setNativeValue(input, text.slice(0, i));
           i++;
           setTimeout(tick, 55 + Math.random() * 60);
         } else resolve();
@@ -113,7 +121,22 @@
     await typeInto(d.getElementById("ob-email"), "julio@example.com");
     await sleep(400);
     d.getElementById("ob-submit").click();
-    await sleep(1400); // onboarding -> home
+    // wait until we actually land on home; throw if onboarding didn't complete
+    var ok = false;
+    for (var i = 0; i < 20 && !ok; i++) {
+      await sleep(300);
+      try { ok = !!d.getElementById("menu-search"); } catch (e) { ok = false; }
+    }
+    if (!ok) throw new Error("onboarding did not complete");
+  }
+
+  function tourFailed(msg) {
+    setCaption("The tour hit a snag — scroll the phone and try the app live instead. 🍋");
+    stepEls.forEach(function (el) { el.classList.remove("active"); });
+    tourBtn.disabled = false;
+    tourBtn.innerHTML = "↻&nbsp; Replay the tour";
+    touring = false;
+    if (window.console) console.warn("[tour]", msg);
   }
 
   async function playTour() {
@@ -123,6 +146,21 @@
     tourBtn.innerHTML = "⏳&nbsp; Playing…";
     resetTour();
     toast.hidden = true;
+
+    try {
+      await playTourSteps();
+    } catch (e) {
+      tourFailed(e && e.message);
+      return;
+    }
+
+    stepEls.forEach(function (el) { el.classList.remove("active"); el.classList.add("done"); });
+    tourBtn.disabled = false;
+    tourBtn.innerHTML = "↻&nbsp; Replay the tour";
+    touring = false;
+  }
+
+  async function playTourSteps() {
 
     await frameReady();
     loader.classList.add("done");
@@ -175,11 +213,6 @@
     setCaption(landedHome
       ? "Straight to Home — no onboarding needed. Persistence works! 🍋"
       : "Relaunched. 🍋");
-
-    stepEls.forEach(function (el) { el.classList.remove("active"); el.classList.add("done"); });
-    tourBtn.disabled = false;
-    tourBtn.innerHTML = "↻&nbsp; Replay the tour";
-    touring = false;
   }
 
   tourBtn.addEventListener("click", playTour);
